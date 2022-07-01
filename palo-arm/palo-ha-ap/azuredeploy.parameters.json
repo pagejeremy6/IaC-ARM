@@ -1,0 +1,151 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceTags": {
+            "value": {
+                "Environment": "Dev",
+                "Project": "palo-minimal",
+                "Owner": "Jeremy"
+            }
+        },
+        "availabilitySetName": {
+            "value": "paloAvailabilitySet"
+        },
+        "nsgNic0Name": {
+            "value": "managementNic0Nsg"
+        },
+        "nsgNic1Name":{
+            "value": "publicNic1Nsg"
+        },
+        "vnetName": {
+            "value": "vnetPalo22"
+        },
+        "vnetAddressPrefix": {
+            "value": "10.1.0.0/16"
+        },
+        "subnet0Prefix": {
+            "value": "10.1.0.0/24"
+        },
+        "subnet0Name": {
+            "value": "managementSubnet"
+        },
+        "subnet1Prefix": {
+            "value": "10.1.1.0/24"
+        },
+        "subnet1Name": {
+            "value": "publicSubnet"
+        },
+        "subnet2Prefix": {
+            "value": "10.1.2.0/24"
+        },
+        "subnet2Name": {
+            "value": "privateSubnet"
+        },
+        "subnet3Prefix": {
+            "value": "10.1.3.0/24"
+        },
+        "subnet3Name": {
+            "value": "serverSubnet"
+        },
+        "subnet4Prefix": {
+            "value": "10.1.4.0/24"
+        },
+        "subnet4Name": {
+            "value": "ha2Subnet"
+        },
+        "udrSubnet0Name": {
+            "value": "udrSubnetManagement"
+        },
+        "udrSubnet1Name": {
+            "value": "udrSubnetPublic"
+        },
+        "udrSubnet2Name": {
+            "value": "udrSubnetPrivate"
+        },
+        "udrSubnet3Name": {
+            "value": "udrSubnetServer"
+        },
+        "udrSubnet4Name": {
+            "value": "udrSubnetHa2"
+        },
+        "nic0Name": {
+            "value": "managementNic"
+        },
+        "domainNamePrefix": {
+            "value": "jayhomelab"
+        },
+        "nic0PublicIpName": {
+            "value": "managementPublicIp"
+        },
+        "publicIpSkuBasic": {
+            "value": "Basic"
+        },
+        "nic1PublicIpName": {
+            "value": "publicPublicIp"
+        },
+        "floatingPublicIpName": {
+            "value": "floatingPublicIp"
+        },
+        "publicIpSkuStandard": {
+            "value": "Standard"
+        },
+        "nic0InternalIpName": {
+            "value": "managementNicInternalIp"
+        },
+        "nic1Name": {
+            "value": "publicNic"
+        },
+        "nic1InternalIpName": {
+            "value": "publicNicInternalIp"
+        },
+        "floatingNic1InternalIpName": {
+            "value": "floatingNic1InternalIp"
+        },
+        "floatingNic2InternalIpName": {
+            "value": "floatingNic2InternalIp"
+        },
+        "subnet0Ip": {
+            "value": "10.1.0."
+        },
+        "subnet1Ip": {
+            "value": "10.1.1."
+        },
+        "subnet2Ip": {
+            "value": "10.1.2."
+        },
+        "subnet4Ip": {
+            "value": "10.1.4."
+        },
+        "nic2Name": {
+            "value": "privateNic"
+        },
+        "nic2InternalIpName": {
+            "value": "privateNicInternalIp"
+        },
+        "nic4Name": {
+            "value": "Ha2Nic"
+        },
+        "nic4InternalIpName": {
+            "value": "ha2NicInternalIp"
+        },
+        "vmName": {
+            "value": "vmPaloHaAp22"
+        },
+        "paSku": {
+            "value": "bundle1"
+        },
+        "paProductId": {
+            "value": "vmseries-flex"
+        },
+        "paPublisherId": {
+            "value": "paloaltonetworks"
+        },
+        "vmSize": {
+            "value": "Standard_D3_v2"
+        },
+        "imageVersion": {
+            "value": "10.1.0"
+        }
+    }
+}
