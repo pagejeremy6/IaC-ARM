@@ -4,10 +4,10 @@ Palo-Minimal
 
 ## Description
 
-Minimal Palo Alto installation in Azure with Azure ARM
-By default will deploy a Standard D3 v2 which is enough for a VM100
-By default deploy a BYOL, could be change for bundle1 or bundle2
-By default will restrict the management access to the Public IP of the machine deploying the code
+- Minimal Palo Alto installation in Azure with Azure ARM.
+- By default will deploy a Standard D3 v2 which is enough for a VM100.
+- By default deploy a BYOL, could be change for bundle1 or bundle2
+- By default will restrict the management access to the Public IP of the machine deploying the code
 
 ### Components
 - 1 resource group
