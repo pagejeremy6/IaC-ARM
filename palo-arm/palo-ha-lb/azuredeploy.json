@@ -1,0 +1,1157 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]"
+        },
+        "resourceTags": {
+            "type": "object"
+        },
+        "availabilitySetName": {
+            "type": "string",
+            "metadata": {
+                "description": "name of availability sets"
+            }
+        },
+        "nsgNic0Name": {
+            "type": "string",
+            "metadata": {
+                "description": "name of NSG on nic0"
+            }
+        },
+        "nsgNic1Name": {
+            "type": "string",
+            "metadata": {
+                "description": "name of NSG on nic1"
+            }
+        },
+        "srcIPInboundNSG": {
+            "type": "string",
+            "metadata": {
+                "description": "Public src IP allowed to connect to nic0"
+            }
+        },
+        "vnetName": {
+            "type": "string",
+            "metadata": {
+                "description": "name of the vnet"
+            }
+
+        },
+        "vnetAddressPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Prefix for vnet"
+            }
+        },
+        "subnet0Prefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Prefix for subnet0"
+            }
+        },
+        "subnet0Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of subnet0"
+            }
+        },
+        "subnet1Prefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Prefix for subnet1"
+            }
+        },
+        "subnet1Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of subnet1"
+            }
+        },
+        "subnet2Prefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Prefix for subnet2"
+            }
+        },
+        "subnet2Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of subnet2"
+            }
+        },
+        "subnet3Prefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Prefix of subnet3"
+            }
+        },
+        "subnet3Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of subnet3"
+            }
+        },
+        "nic0Name": {
+            "type": "string",
+            "metadata": {
+                "description": "name of nic0"
+            }
+        },
+        "domainNamePrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "Suffix for the domain name label"
+            }
+        },
+        "udrSubnet0Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of udr subnet0"
+            }
+        },
+        "udrSubnet1Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of udr subnet1"
+            }
+        },
+        "udrSubnet2Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of udr subnet2"
+            }
+        },
+        "udrSubnet3Name": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of udr subnet3"
+            }
+        },
+        "nic0PublicIpName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Public IP on nic0"
+            }
+        },
+        "publicIpSkuBasic": {
+            "type": "string",
+            "allowedValues": [
+                "Basic",
+                "Standard"
+            ]
+        },
+        "publicIpSkuStandard": {
+            "type": "string",
+            "allowedValues": [
+                "Basic",
+                "Standard"
+            ]
+        },
+        "floatingPublicIpName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the floating Public IP on nic1"
+            }
+        },
+        "nic0InternalIpName": {
+            "type": "string",
+            "metadata": {
+                "description": "name of the internal IP on nic0"
+            }
+        },
+        "nic1Name": {
+            "type": "string",
+            "metadata": {
+                "description": "name of nic1"
+            }
+        },
+        "nic1InternalIpName": {
+            "type": "string",
+            "metadata": {
+                "description": "name of the internal IP on nic1"
+            }
+        },
+        "subnet0Ip": {
+            "type": "string",
+            "metadata": {
+                "description": "IP available in subnet0"
+            }
+        },
+        "subnet1Ip": {
+            "type": "string",
+            "metadata": {
+                "description": "IP available in subnet1"
+            }
+        },
+        "subnet2Ip": {
+            "type": "string",
+            "metadata": {
+                "description": "IP available in subnet2"
+            }
+        },
+        "nic2Name": {
+            "type": "string",
+            "metadata": {
+                "description": "name of nic2"
+            }
+        },
+        "nic2InternalIpName": {
+            "type": "string",
+            "metadata": {
+                "description": "name of the internal IP on nic2"
+            }
+        },    
+        "vmName": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 24,
+            "metadata": {
+                "description": "name of the VM"
+            }
+        },
+        "paSku": {
+            "type": "string",
+            "metadata": {
+                "description": "licensing option"
+            },
+            "defaultValue": [
+                "byol",
+                "bundle1",
+                "bundle2"
+            ]
+        },
+        "paPublisherId": {
+            "type": "string",
+            "metadata": {
+                "description": "name of image publisher"
+            }
+        },
+        "paProductId": {
+            "type": "string",
+            "metadata": {
+                "description": "name of product"
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "metadata": {
+                "description": "Size of the VM"
+            },
+            "allowedValues": [
+                "Standard_D3_v2",
+                "Standard_D4_v2",
+                "Standard_D5_v2",
+                "Standard_D4_v3",
+                "Standard_DS3_v2",
+                "Standard_DS4_v2",
+                "Standard_DS5_v2",
+                "Standard_D8_v3",
+                "Standard_D16_v3",
+                "Standard_D8s_v3",
+                "Standard_D16s_v3",
+                "Standard_F8s_v2",
+                "Standard_F32s_v2",
+                "Standard_D8_v4",
+                "Standard_D16_v4",
+                "Standard_D8s_v4",
+                "Standard_D16s_v4"
+            ]
+        },
+        "imageVersion": {
+            "type": "string",
+            "metadata": {
+                "description": "version number of VM-Series"
+            },
+            "allowedValues": [
+                "latest",
+                "10.1.0",
+                "10.0.6",
+                "9.1.10"
+            ]
+        },
+        "adminUsername": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Username of admin account"
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Password of admin account"
+            }
+        },
+        "publicLoadBalancerName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the public load balancer"
+            }
+        },
+        "internalLoadBalancerName": {
+            "type": "string",
+            "metadata": {
+                "description": "description"
+            }
+        }
+    },
+    "functions": [],
+    "variables": {
+        "availabilitySetIdVar": "[resourceId('Microsoft.Compute/availabilitySets',parameters('availabilitySetName'))]",
+        "nsgNic0IdVar": "[resourceId('Microsoft.Network/networkSecurityGroups',parameters('nsgNic0Name'))]",
+        "nsgNic1IdVar": "[resourceId('Microsoft.Network/networkSecurityGroups',parameters('nsgNic1Name'))]",
+        "vnetIdVar": "[resourceId('Microsoft.Network/virtualNetworks',parameters('vnetName'))]",
+        "domainNameVar": "[toLower( concat(parameters('domainNamePrefix'), uniqueString(resourceGroup().id)))]",
+        "subnet0IdVar": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('vnetName'),parameters('subnet0Name'))]",
+        "subnet1IdVar": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('vnetName'),parameters('subnet1Name'))]",
+        "subnet2IdVar": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('vnetName'),parameters('subnet2Name'))]",
+        "subnet3IdVar": "[resourceId('Microsoft.Network/virtualNetworks/subnets',parameters('vnetName'),parameters('subnet3Name'))]",
+        "udrSubnet0IdVar": "[resourceId('Microsoft.Network/routeTables',parameters('udrSubnet0Name'))]",
+        "udrSubnet1IdVar": "[resourceId('Microsoft.Network/routeTables',parameters('udrSubnet1Name'))]",
+        "udrSubnet2IdVar": "[resourceId('Microsoft.Network/routeTables',parameters('udrSubnet2Name'))]",
+        "udrSubnet3IdVar": "[resourceId('Microsoft.Network/routeTables',parameters('udrSubnet3Name'))]",
+        "nic0PublicIpIdVar": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('nic0PublicIpName'))]",
+        "floatinPublicIpIdVar": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('floatingPublicIpName'))]",
+        "nic0-2PublicIpIdVar": "[resourceId('Microsoft.Network/publicIPAddresses',concat(parameters('nic0PublicIpName'),'-2'))]",
+        "nic0IdVar": "[resourceId('Microsoft.Network/networkInterfaces',parameters('nic0Name'))]",
+        "nic1IdVar": "[resourceId('Microsoft.Network/networkInterfaces',parameters('nic1Name'))]",
+        "nic2IdVar": "[resourceId('Microsoft.Network/networkInterfaces',parameters('nic2Name'))]",
+        "nic0-2IdVar": "[resourceId('Microsoft.Network/networkInterfaces',concat(parameters('nic0Name'),'-2'))]",
+        "nic1-2IdVar": "[resourceId('Microsoft.Network/networkInterfaces',concat(parameters('nic1Name'),'-2'))]",
+        "nic2-2IdVar": "[resourceId('Microsoft.Network/networkInterfaces',concat(parameters('nic2Name'),'-2'))]",
+        "publicLbIdVar": "[resourceId('Microsoft.Network/loadBalancers',parameters('publicLoadBalancerName'))]",
+        "internalLbIdVar": "[resourceId('Microsoft.Network/loadBalancers',parameters('internalLoadBalancerName'))]"
+    },
+    "resources": [
+        {
+            "name": "[parameters('availabilitySetName')]",
+            "type": "Microsoft.Compute/availabilitySets",
+            "apiVersion": "2021-11-01",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "properties": {
+                "platformUpdateDomainCount": 5,
+                "platformFaultDomainCount": 2
+            },
+            "sku": {
+                "name": "Aligned"
+            }
+        },
+        {
+            "name": "[parameters('nsgNic0Name')]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2020-11-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "Allow-Outside-From-IP",
+                        "properties": {
+                            "description": "Rule",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "[parameters('srcIPInboundNSG')]",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 100,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "Allow-Intra",
+                        "properties": {
+                            "description": "Allow intra network traffic",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "[parameters('subnet0Prefix')]",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 101,
+                            "direction": "Inbound"
+                        }
+                    },
+                    {
+                        "name": "Default-Deny",
+                        "properties": {
+                            "description": "Default-Deny if we don't match Allow rule",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "*",
+                            "destinationAddressPrefix": "*",
+                            "access": "Deny",
+                            "priority": 200,
+                            "direction": "Inbound"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[parameters('nsgNic1Name')]",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2020-11-01",
+            "location": "[parameters('location')]",
+            "properties": {
+                "securityRules": [
+                    {
+                        "name": "Allow-Outside-From-IP",
+                        "properties": {
+                            "description": "Rule",
+                            "protocol": "*",
+                            "sourcePortRange": "*",
+                            "destinationPortRange": "*",
+                            "sourceAddressPrefix": "[parameters('srcIPInboundNSG')]",
+                            "destinationAddressPrefix": "*",
+                            "access": "Allow",
+                            "priority": 100,
+                            "direction": "Inbound"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[parameters('udrSubnet0Name')]",
+            "type": "Microsoft.Network/routeTables",
+            "apiVersion": "2020-11-01",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "BlackholeToPublicSubnet",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet1Prefix')]",
+                            "nextHopType": "None"
+                        }
+                    },
+                    {
+                        "name": "BlackholeToServerSubnet",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet3Prefix')]",
+                            "nextHopType": "None"
+                        }
+                    },
+                    {
+                        "name": "BlackholeToPrivateSubnet",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet2Prefix')]",
+                            "nextHopType": "None"
+                        }
+                    }
+                ],
+                "disableBgpRoutePropagation": true
+            }
+        },        
+        {
+            "name": "[parameters('udrSubnet1Name')]",
+            "type": "Microsoft.Network/routeTables",
+            "apiVersion": "2020-11-01",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "BlackholeToPrivateSubnet",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet2Prefix')]",
+                            "nextHopType": "None"
+                        }
+                    },
+                    {
+                        "name": "BlackholeToServerSubnet",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet3Prefix')]",
+                            "nextHopType": "None"
+                        }
+                    },
+                    {
+                        "name": "BlackholeToManagementSubnet",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet0Prefix')]",
+                            "nextHopType": "None"
+                        }
+                    }
+                ],
+                "disableBgpRoutePropagation": true
+            }
+        },
+        {
+            "name": "[parameters('udrSubnet2Name')]",
+            "type": "Microsoft.Network/routeTables",
+            "apiVersion": "2020-11-01",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "DefaultRouteToPaloPrivateIP",
+                        "properties": {
+                            "addressPrefix": "0.0.0.0/0",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[concat(parameters('subnet2Ip'),'100')]"
+                        }
+                    },
+                    {
+                        "name": "BlackholeToManagementSubnet",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet0Prefix')]",
+                            "nextHopType": "None"
+                        }
+                    },
+                    {
+                        "name": "ToPublicSubnetPaloPrivateIp",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet1Prefix')]",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[concat(parameters('subnet2Ip'),'100')]"
+                        }
+                    }
+
+                ],
+                "disableBgpRoutePropagation": true
+            }
+        },
+        {
+            "name": "[parameters('udrSubnet3Name')]",
+            "type": "Microsoft.Network/routeTables",
+            "apiVersion": "2020-11-01",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "properties": {
+                "routes": [
+                    {
+                        "name": "DefaultRouteToPaloPrivateIP",
+                        "properties": {
+                            "addressPrefix": "0.0.0.0/0",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[concat(parameters('subnet2Ip'),'100')]"
+                        }
+                    },
+                    {
+                        "name": "BlackholeToManagementSubnet",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet0Prefix')]",
+                            "nextHopType": "None"
+                        }
+                    },
+                    {
+                        "name": "ToPublicSubnetPaloPrivateIp",
+                        "properties": {
+                            "addressPrefix": "[parameters('subnet1Prefix')]",
+                            "nextHopType": "VirtualAppliance",
+                            "nextHopIpAddress": "[concat(parameters('subnet2Ip'),'100')]"
+                        }
+                    }
+
+                ],
+                "disableBgpRoutePropagation": true
+            }
+        },
+        {
+            "name": "[parameters('vnetName')]",
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2020-11-01",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[parameters('vnetAddressPrefix')]"
+                    ]
+                }
+            },
+            "resources": [
+                {
+                    "name": "[parameters('subnet0Name')]",
+                    "type": "subnets",
+                    "apiVersion": "2020-11-01",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[variables('vnetIdVar')]",
+                        "[variables('udrSubnet0IdVar')]"
+                    ],
+                    "properties": {
+                        "addressPrefix": "[parameters('subnet0Prefix')]",
+                        "routeTable": {
+                            "id": "[variables('udrSubnet0IdVar')]"
+                        }
+                    }
+                },
+                {
+                    "name": "[parameters('subnet1Name')]",
+                    "type": "subnets",
+                    "apiVersion": "2020-11-01",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[variables('vnetIdVar')]",
+                        "[variables('subnet0IdVar')]",
+                        "[variables('udrSubnet1IdVar')]"
+                    ],
+                    "properties": {
+                        "addressPrefix": "[parameters('subnet1Prefix')]",
+                        "routeTable": {
+                            "id": "[variables('udrSubnet1IdVar')]"
+                        },
+                        "networkSecurityGroup": {
+                            "id": "[variables('nsgNic1IdVar')]"
+                        }
+                    }
+                },
+                {
+                    "name": "[parameters('subnet2Name')]",
+                    "type": "subnets",
+                    "apiVersion": "2020-11-01",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[variables('vnetIdVar')]",
+                        "[variables('subnet1IdVar')]",
+                        "[variables('udrSubnet2IdVar')]"
+                    ],
+                    "properties": {
+                        "addressPrefix": "[parameters('subnet2Prefix')]",
+                        "routeTable": {
+                            "id": "[variables('udrSubnet2IdVar')]"
+                        }
+                    }
+                },
+                {
+                    "name": "[parameters('subnet3Name')]",
+                    "type": "subnets",
+                    "apiVersion": "2020-11-01",
+                    "location": "[parameters('location')]",
+                    "dependsOn": [
+                        "[variables('vnetIdVar')]",
+                        "[variables('subnet2IdVar')]",
+                        "[variables('udrSubnet3IdVar')]"
+                    ],
+                    "properties": {
+                        "addressPrefix": "[parameters('subnet3Prefix')]",
+                        "routeTable": {
+                            "id": "[variables('udrSubnet3IdVar')]"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2020-11-01",
+            "name": "[parameters('nic0PublicIpName')]",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "sku": {
+                "name": "[parameters('publicIpSkuStandard')]"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static",
+                "dnsSettings": {
+                    "domainNameLabel": "[variables('domainNameVar')]"
+                }
+
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2020-11-01",
+            "name": "[concat(parameters('nic0PublicIpName'),'-2')]",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "sku": {
+                "name": "[parameters('publicIpSkuStandard')]"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static",
+                "dnsSettings": {
+                    "domainNameLabel": "[concat(variables('domainNameVar'),'-2')]"
+                }
+
+            }
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2020-11-01",
+            "name": "[parameters('floatingPublicIpName')]",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "sku": {
+                "name": "[parameters('publicIpSkuStandard')]"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static",
+                "dnsSettings": {
+                    "domainNameLabel": "[concat(variables('domainNameVar'),'-3')]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-11-01",
+            "name": "[parameters('nic0Name')]",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "dependsOn": [
+                "[variables('nic0PublicIpIdVar')]",
+                "[variables('subnet0IdVar')]",
+                "[variables('nsgNic0IdVar')]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "[parameters('nic0InternalIpName')]",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[concat(parameters('subnet0Ip'),'4')]",
+                            "publicIPAddress": {
+                                "id": "[variables('nic0PublicIpIdVar')]"
+                            },
+                            "subnet": {
+                                "id": "[variables('subnet0IdVar')]"
+                            }
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[variables('nsgNic0IdVar')]"
+                }
+
+            }
+        },
+        {
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-11-01",
+            "name": "[concat(parameters('nic0Name'),'-2')]",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "dependsOn": [
+                "[variables('subnet0IdVar')]",
+                "[variables('nsgNic0IdVar')]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "[concat(parameters('nic0InternalIpName'),'-2')]",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[concat(parameters('subnet0Ip'),'5')]",
+                            "publicIPAddress": {
+                                "id": "[variables('nic0-2PublicIpIdVar')]"
+                            },
+                            "subnet": {
+                                "id": "[variables('subnet0IdVar')]"
+                            }
+                        }
+                    }
+                ],
+                "networkSecurityGroup": {
+                    "id": "[variables('nsgNic0IdVar')]"
+                }
+
+            }
+        },
+        {
+            "name": "[parameters('nic1Name')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-11-01",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "dependsOn": [
+                "[variables('subnet1IdVar')]",
+                "[variables('nsgNic1IdVar')]",
+                "[variables('floatinPublicIpIdVar')]",
+                "[variables('publicLbIdVar')]"
+            ],
+            "properties": {
+                "enableAcceleratedNetworking": true,
+                "enableIPForwarding": true,
+                "ipConfigurations": [
+                    {
+                        "name": "[parameters('nic1InternalIpName')]",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[concat(parameters('subnet1Ip'),'4')]",
+                            "subnet": {
+                                "id": "[variables('subnet1IdVar')]"
+                            },
+                            "primary": true,
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('publicLoadBalancerName')),'/backendAddressPools/publicLbBackEnd')]"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[concat(parameters('nic1Name'),'-2')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-11-01",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "dependsOn": [
+                "[variables('subnet1IdVar')]",
+                "[variables('nsgNic1IdVar')]",
+                "[variables('publicLbIdVar')]"
+            ],
+            "properties": {
+                "enableAcceleratedNetworking": true,
+                "enableIPForwarding": true,
+                "ipConfigurations": [
+                    {
+                        "name": "[concat(parameters('nic1InternalIpName'),'-2')]",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[concat(parameters('subnet1Ip'),'5')]",
+                            "subnet": {
+                                "id": "[variables('subnet1IdVar')]"
+                            },
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('publicLoadBalancerName')),'/backendAddressPools/publicLbBackEnd')]"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[parameters('nic2Name')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-11-01",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "dependsOn": [
+                "[variables('subnet2IdVar')]",
+                "[variables('internalLbIdVar')]"
+            ],
+            "properties": {
+                "enableAcceleratedNetworking": true,
+                "enableIPForwarding": true,
+                "ipConfigurations": [
+                    {
+                        "name": "[parameters('nic2InternalIpName')]",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[concat(parameters('subnet2Ip'),'4')]",
+                            "subnet": {
+                                "id": "[variables('subnet2IdVar')]"
+                            },
+                            "primary": true,
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('internalLoadBalancerName')),'/backendAddressPools/internalLbBackEnd')]"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[concat(parameters('nic2Name'),'-2')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "apiVersion": "2020-11-01",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "dependsOn": [
+                "[variables('subnet2IdVar')]",
+                "[variables('internalLbIdVar')]"
+            ],
+            "properties": {
+                "enableAcceleratedNetworking": true,
+                "enableIPForwarding": true,
+                "ipConfigurations": [
+                    {
+                        "name": "[concat(parameters('nic2InternalIpName'),'-2')]",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[concat(parameters('subnet2Ip'),'5')]",
+                            "subnet": {
+                                "id": "[variables('subnet2IdVar')]"
+                            },
+                            "loadBalancerBackendAddressPools": [
+                                {
+                                    "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('internalLoadBalancerName')),'/backendAddressPools/internalLbBackEnd')]"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },              
+        {
+            "name": "[parameters('vmName')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2021-11-01",
+            "dependsOn": [
+                "[variables('nic0IdVar')]",
+                "[variables('nic1IdVar')]",
+                "[variables('nic2IdVar')]",
+                "[variables('availabilitySetIdVar')]"
+            ],
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "plan": {
+                "name": "[parameters('paSku')]",
+                "product": "[parameters('paProductId')]",
+                "publisher": "[parameters('paPublisherId')]"
+            },
+            "properties": {
+                "availabilitySet": {
+                    "id": "[variables('availabilitySetIdVar')]"
+                },
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vmSize')]"
+                },
+                "osProfile": {
+                    "computerName": "[toLower(parameters('vmName'))]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[parameters('paPublisherId')]",
+                        "offer": "[parameters('paProductId')]",
+                        "sku": "[parameters('paSku')]",
+                        "version": "[parameters('imageVersion')]"
+                    },
+                    "osDisk": {
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[variables('nic0IdVar')]",
+                            "properties": {
+                                "primary": true
+                            }
+                        },
+                        {
+                            "id": "[variables('nic1IdVar')]",
+                            "properties": {
+                                "primary": false
+                            }
+                        },
+                        {
+                            "id": "[variables('nic2IdVar')]",
+                            "properties": {
+                                "primary": false
+                            }
+                        }                      
+                    ]
+                }
+            }
+        },
+        {
+            "name": "[concat(parameters('vmName'),'-2')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2021-11-01",
+            "dependsOn": [
+                "[variables('nic0-2IdVar')]",
+                "[variables('nic1-2IdVar')]",
+                "[variables('nic2-2IdVar')]",
+                "[variables('availabilitySetIdVar')]"
+            ],
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "plan": {
+                "name": "[parameters('paSku')]",
+                "product": "[parameters('paProductId')]",
+                "publisher": "[parameters('paPublisherId')]"
+            },
+            "properties": {
+                "availabilitySet": {
+                    "id": "[variables('availabilitySetIdVar')]"
+                },
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vmSize')]"
+                },
+                "osProfile": {
+                    "computerName": "[concat(toLower(parameters('vmName')),'-2')]",
+                    "adminUsername": "[parameters('adminUsername')]",
+                    "adminPassword": "[parameters('adminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[parameters('paPublisherId')]",
+                        "offer": "[parameters('paProductId')]",
+                        "sku": "[parameters('paSku')]",
+                        "version": "[parameters('imageVersion')]"
+                    },
+                    "osDisk": {
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[variables('nic0-2IdVar')]",
+                            "properties": {
+                                "primary": true
+                            }
+                        },
+                        {
+                            "id": "[variables('nic1-2IdVar')]",
+                            "properties": {
+                                "primary": false
+                            }
+                        },
+                        {
+                            "id": "[variables('nic2-2IdVar')]",
+                            "properties": {
+                                "primary": false
+                            }
+                        }                     
+                    ]
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Network/loadBalancers",
+            "apiVersion": "2020-11-01",
+            "name": "[parameters('internalLoadBalancerName')]",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "dependsOn": [
+                "[variables('subnet2IdVar')]"
+            ],
+            "sku": {
+                "name": "Standard"
+            },
+            "properties": {
+                "frontendIPConfigurations": [
+                    {
+                        "name": "internalLbFrontEnd",
+                        "properties": {
+                            "privateIPAllocationMethod": "Static",
+                            "privateIPAddress": "[concat(parameters('subnet2Ip'),'100')]",
+                            "subnet": {
+                                "id": "[variables('subnet2IdVar')]"
+                            }
+                        }
+                    }
+                ],
+                "probes": [
+                    {
+                        "name": "ProbeTCP22",
+                        "properties": {
+                            "protocol": "Tcp",
+                            "port": 22,
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "internalLbBackEnd"
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "name": "Allow",
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('internalLoadBalancerName')),'/frontendIPConfigurations/internalLbFrontEnd')]"
+                            },
+                            "frontendPort": 0,
+                            "backendPort": 0,
+                            "enableFloatingIP": true,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "All",
+                            "loadDistribution": "Default",
+                            "backendAddressPool": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers',parameters('internalLoadBalancerName')),'/backendAddressPools/internalLbBackEnd')]"
+                            },
+                            "probe": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers',parameters('internalLoadBalancerName')),'/probes/ProbeTCP22')]"
+                            },
+                            "disableOutboundSnat": true
+                        }
+                    }
+                ],
+                "inboundNatPools": [],
+                "inboundNatRules": [],
+                "outboundRules": []
+            }
+        },
+        {
+            "type": "Microsoft.Network/loadBalancers",
+            "apiVersion": "2020-11-01",
+            "name": "[parameters('publicLoadBalancerName')]",
+            "location": "[parameters('location')]",
+            "tags": "[parameters('resourceTags')]",
+            "dependsOn": [
+                "[variables('floatinPublicIpIdVar')]"
+            ],
+            "sku": {
+                "name": "Standard"
+            },
+            "properties": {
+                "frontendIPConfigurations": [
+                    {
+                        "name": "publicLbFrontEnd",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[variables('floatinPublicIpIdVar')]"
+                            }
+                        }
+                    }
+                ],
+                "probes": [
+                    {
+                        "name": "ProbeTCP22",
+                        "properties": {
+                            "protocol": "Tcp",
+                            "port": 22,
+                            "intervalInSeconds": 5,
+                            "numberOfProbes": 2
+                        }
+                    }
+                ],
+                "backendAddressPools": [
+                    {
+                        "name": "publicLbBackEnd"
+                    }
+                ],
+                "loadBalancingRules": [
+                    {
+                        "name": "LB-Public-3389",
+                        "properties": {
+                            "frontendIPConfiguration": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers', parameters('publicLoadBalancerName')),'/frontendIPConfigurations/publicLbFrontEnd')]"
+                            },
+                            "frontendPort": 3389,
+                            "backendPort": 3389,
+                            "enableFloatingIP": true,
+                            "idleTimeoutInMinutes": 4,
+                            "protocol": "Tcp",
+                            "loadDistribution": "Default",
+                            "backendAddressPool": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers',parameters('publicLoadBalancerName')),'/backendAddressPools/publicLbBackEnd')]"
+                            },
+                            "probe": {
+                                "id": "[concat(resourceId('Microsoft.Network/loadBalancers',parameters('publicLoadBalancerName')),'/probes/ProbeTCP22')]"
+                            },
+                            "disableOutboundSnat": true
+                        }
+                    }
+                ],
+                "inboundNatPools": [],
+                "inboundNatRules": [],
+                "outboundRules": []
+            }
+        }    
+    ],
+    "outputs": {}
+}
